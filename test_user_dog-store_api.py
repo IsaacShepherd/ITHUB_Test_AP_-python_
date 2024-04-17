@@ -5,6 +5,7 @@ ENDPOINT = "https://petstore.swagger.io/v2/user"
 
 
 def test_can_create_user():
+    new_user = new_user_payload()
     pass
 
 
@@ -38,3 +39,6 @@ def new_user_payload():
         "phone": "555555555",
         "userStatus": 0
     }
+
+def create_user(payload):
+    return requests.post(ENDPOINT, json = payload)
