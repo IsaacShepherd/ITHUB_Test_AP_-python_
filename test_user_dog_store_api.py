@@ -22,10 +22,41 @@ def test_can_create_user():
 
 
 def test_can_get_user_by_user_name():
-    pass
+    payload = new_user_payload()
+    create_user_response = create_user(payload)
+    assert create_user_response.status_code == 200
+
+    data = create_user_response.json()
+    user_name = data["name"]
+    get_user_response = get_user_by_user_name(user_name)
+
+    assert get_user_response.status_code == 200
+    
 
 
-def test_can_update_user():
+def test_can_update_user_first_name():
+    payload = new_user_payload()
+    create_user_response = create_user(payload)
+    user_name = create_user_response.json()["name"]
+
+    new_payload = {
+        "id": uuid.uuid4().int,
+        "username": payload["username"],
+        "firstName": "Vovchik",
+        "lastName": payload["lastname"],
+        "email": payload["email"],
+        "password": payload["password"],
+        "phone": payload["phone"],
+        "userStatus": payload["userStatus"]
+    }
+    update_pet_response = update_pet(new_payload)
+    assert update_pet_response.status_code == 200
+
+    get_pet_response = get_pet_byID(pet_id)
+    assert get_pet_response.status_code == 200
+
+    get_pet_data = get_pet_response.json()
+    assert get_pet_data["status"] == new_payload["status"]
     pass
 
 
