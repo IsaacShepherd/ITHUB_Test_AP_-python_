@@ -6,10 +6,22 @@ ENDPOINT = "https://petstore.swagger.io/v2/user"
 
 def test_can_create_user():
     new_user = new_user_payload()
-    pass
+    create_user_response = create_user(payload)
+    assert create_user_response.status_code == 200
+
+    data = create_user_response.json()
+
+    user_id = data["id"]
+    user_name = data["name"]
+    get_user_response = get_user_by_user_name(user_name)
+
+    assert get_user_response.status_code == 200
+    get_user_data = get_user_response.json()
+    assert get_user_data["name"] == payload["name"]
+    assert get_user_data["id"] == payload["id"]
 
 
-def test_can_get_user_by_username():
+def test_can_get_user_by_user_name():
     pass
 
 
@@ -30,7 +42,7 @@ def test_can_login_user():
 
 def new_user_payload():
     return {
-        "id": uuid.uuid4(),
+        "id": uuid.uuid4().int,
         "username": "AllanWake",
         "firstName": "Allan",
         "lastName": "Wake",
@@ -42,3 +54,7 @@ def new_user_payload():
 
 def create_user(payload):
     return requests.post(ENDPOINT, json = payload)
+
+
+def get_user_by_user_name(user_name):
+    return requests.get(ENDPOINT + f"/{user_name}")
