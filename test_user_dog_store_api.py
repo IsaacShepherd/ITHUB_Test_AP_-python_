@@ -49,15 +49,14 @@ def test_can_update_user_first_name():
         "phone": payload["phone"],
         "userStatus": payload["userStatus"]
     }
-    update_pet_response = update_pet(new_payload)
-    assert update_pet_response.status_code == 200
+    update_user_response = update_user(new_payload)
+    assert update_user_response.status_code == 200
 
-    get_pet_response = get_pet_byID(pet_id)
-    assert get_pet_response.status_code == 200
+    get_user_response = get_user_by_user_name(user_name)
+    assert get_user_response.status_code == 200
 
-    get_pet_data = get_pet_response.json()
-    assert get_pet_data["status"] == new_payload["status"]
-    pass
+    get_user_data = get_user_response.json()
+    assert get_user_data["firstName"] == new_payload["firstName"]
 
 
 def test_can_delete_user():
@@ -89,3 +88,7 @@ def create_user(payload):
 
 def get_user_by_user_name(user_name):
     return requests.get(ENDPOINT + f"/{user_name}")
+
+
+def update_user(user_name):
+    return requests.put(ENDPOINT + f"/{user_name}", json=payload)
