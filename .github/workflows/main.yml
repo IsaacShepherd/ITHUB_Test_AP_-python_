@@ -53,6 +53,8 @@ jobs:
 
   publish-report:
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages
     needs: generate-report
     name: Publish Report
     steps: 
